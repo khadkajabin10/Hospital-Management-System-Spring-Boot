@@ -1,0 +1,17 @@
+INSERT INTO patient (birthdate, blood_group, email, gender, name)
+VALUES ('1990-05-12', 'A_Positive', 'diana@example.com', 'female', 'Diana');
+
+INSERT INTO patient (birthdate, blood_group, email, gender, name)
+VALUES ('1988-03-22', 'A_Positive', 'diego@example.com', 'male', 'Diego');
+
+INSERT INTO patient (birthdate, blood_group, email, gender, name)
+VALUES ('1995-07-14', 'B_Negative', 'ram@example.com', 'male', 'Ram');
+
+INSERT INTO patient (birthdate, blood_group, email, gender, name)
+VALUES ('2000-11-30', 'B_Negative', 'sita@example.com', 'female', 'Sita');
+
+INSERT INTO patient (birthdate, blood_group, email, gender, name)
+VALUES ('1992-09-05', 'O_Positive', 'hari@example.com', 'male', 'Hari');
+
+INSERT INTO patient (birthdate, blood_group, email, gender, name)
+VALUES ('1998-01-17', 'O_Positive', 'gita@example.com', 'female', 'Gita');
