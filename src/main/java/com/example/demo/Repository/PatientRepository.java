@@ -14,13 +14,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface PatientRepository extends JpaRepository<Patienttbl,Long> {
-    Patienttbl findByName(String name);
-
-    List<Patienttbl> findByGender(String gender);
-
-    List<Patienttbl> findByBirthdateBetween(LocalDate start, LocalDate end);
-
-    List<Patienttbl> findByNameContainingOrderByIdDesc(String name);
+//    Patienttbl findByName(String name);
+//
+//    List<Patienttbl> findByGender(String gender);
+//
+//    List<Patienttbl> findByBirthdateBetween(LocalDate start, LocalDate end);
+//
+//    List<Patienttbl> findByNameContainingOrderByIdDesc(String name);
 
     // @Query("Select p from Patienttbl p where p.bloodGroup=?1")
 //   @Query(value = "SELECT * FROM patient WHERE name = 'Hari' ", nativeQuery = true)
@@ -33,6 +33,12 @@ public interface PatientRepository extends JpaRepository<Patienttbl,Long> {
 //    @Modifying
 //    @Query("UPDATE Patienttbl p SET p.name = :name WHERE p.id = :id")
 //    int updaterow(@Param("name") String name, @Param("id") Long id);
-    @Query(value = "Select * from patient ",nativeQuery = true)
-    Page<Patienttbl> findallPatient(Pageable pageable);
+//    @Query(value = "Select * from patient ",nativeQuery = true)
+//    Page<Patienttbl> findallPatient(Pageable pageable);
+
+    @Query("SELECT p FROM Patienttbl p " +
+            "LEFT JOIN FETCH p.appointments" )
+
+    List<Patienttbl> findAllPatient();
+
 }

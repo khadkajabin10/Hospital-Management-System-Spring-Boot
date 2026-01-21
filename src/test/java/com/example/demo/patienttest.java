@@ -5,6 +5,7 @@ import com.example.demo.Entity.type.Bloodgrouptype;
 import com.example.demo.Repository.PatientRepository;
 import com.example.demo.Service.PatientService;
 import com.example.demo.dto.Bloodgroupcount;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,6 +27,7 @@ public class patienttest {
 
 
     @Test
+
     public void testpatient() {
         //Patienttbl e1=patientService.getentitybyid(4L);
 //        Patienttbl patienttbl=patientRepository.findByName("Diana");
@@ -46,9 +48,15 @@ public class patienttest {
 //        for ( Bloodgroupcount bloodgroupcount: patienttbl6) {
 //            System.out.println(bloodgroupcount);
 //        }
-       Page<Patienttbl> patienttbls=patientRepository.findallPatient(PageRequest.of(2,2 ,Sort.by("name")));
-        for(Patienttbl patient : patienttbls){
-            System.out.println(patient);
+//       Page<Patienttbl> patienttbls=patientRepository.findallPatient(PageRequest.of(2,2 ,Sort.by("name")));
+//        for(Patienttbl patient : patienttbls){
+//            System.out.println(patient);
+//        }
+//        Patienttbl patienttbl= patientService.deletePatient(1L);
+//        System.out.println(patienttbl);
+        List<Patienttbl> patienttbls=patientRepository.findAllPatient();
+        for(Patienttbl eachpatient:patienttbls){
+        System.out.println(eachpatient);
         }
     }
 }

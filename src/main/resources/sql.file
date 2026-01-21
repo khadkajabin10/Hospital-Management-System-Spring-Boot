@@ -1,17 +1,12 @@
-INSERT INTO patient (birthdate, blood_group, email, gender, name)
-VALUES ('1990-05-12', 'A_Positive', 'diana@example.com', 'female', 'Diana');
 
-INSERT INTO patient (birthdate, blood_group, email, gender, name)
-VALUES ('1988-03-22', 'A_Positive', 'diego@example.com', 'male', 'Diego');
 
-INSERT INTO patient (birthdate, blood_group, email, gender, name)
-VALUES ('1995-07-14', 'B_Negative', 'ram@example.com', 'male', 'Ram');
+INSERT INTO appointment (appointment_time, reason, `patient-Id`, `doctor-Id`)
+VALUES
+('2026-11-11 14:25:05', 'General Checkup', 2, 2),
 
-INSERT INTO patient (birthdate, blood_group, email, gender, name)
-VALUES ('2000-11-30', 'B_Negative', 'sita@example.com', 'female', 'Sita');
+ ('2026-11-12 09:00:00', 'Follow-up Consultation', 3, 3),
 
-INSERT INTO patient (birthdate, blood_group, email, gender, name)
-VALUES ('1992-09-05', 'O_Positive', 'hari@example.com', 'male', 'Hari');
+ ('2026-11-13 16:30:00', 'Blood Test', 4, 4),
+ ('2026-11-14 10:15:00', 'Dental Checkup', 2, 2),
 
-INSERT INTO patient (birthdate, blood_group, email, gender, name)
-VALUES ('1998-01-17', 'O_Positive', 'gita@example.com', 'female', 'Gita');
+ ('2026-11-15 11:45:00', 'Eye Examination', 3, 3);

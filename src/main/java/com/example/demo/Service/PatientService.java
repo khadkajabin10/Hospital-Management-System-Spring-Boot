@@ -16,7 +16,12 @@ public class PatientService {
         e1.setName("yoyo");
         return e1;
     }
-
+  @Transactional
+    public Patienttbl deletePatient(Long patientid){
+        Patienttbl patienttbl=patientRepository.findById(patientid).orElseThrow();
+         patientRepository.delete(patienttbl);
+         return patienttbl;
+  }
 
 
 }
