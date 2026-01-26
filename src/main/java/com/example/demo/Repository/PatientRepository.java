@@ -4,6 +4,7 @@ import com.example.demo.Entity.Patienttbl;
 import com.example.demo.dto.Bloodgroupcount;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -11,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 public interface PatientRepository extends JpaRepository<Patienttbl,Long> {
@@ -36,9 +38,10 @@ public interface PatientRepository extends JpaRepository<Patienttbl,Long> {
 //    @Query(value = "Select * from patient ",nativeQuery = true)
 //    Page<Patienttbl> findallPatient(Pageable pageable);
 
-    @Query("SELECT p FROM Patienttbl p " +
-            "LEFT JOIN FETCH p.appointments" )
-
-    List<Patienttbl> findAllPatient();
-
+//    @Query("SELECT p FROM Patienttbl p " +
+//            "LEFT JOIN FETCH p.appointments" )
+//
+//    List<Patienttbl> findAllPatient();
+@Query(value = "select * from patient",nativeQuery = true)
+    Page<Patienttbl> findAllPatients(Pageable pageable );
 }

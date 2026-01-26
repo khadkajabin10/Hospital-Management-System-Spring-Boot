@@ -54,10 +54,10 @@ public class patienttest {
 //        }
 //        Patienttbl patienttbl= patientService.deletePatient(1L);
 //        System.out.println(patienttbl);
-        List<Patienttbl> patienttbls=patientRepository.findAllPatient();
-        for(Patienttbl eachpatient:patienttbls){
-        System.out.println(eachpatient);
-        }
+//        List<Patienttbl> patienttbls=patientRepository.findAllPatient();
+//        for(Patienttbl eachpatient:patienttbls){
+//        System.out.println(eachpatient);
+//        }
     }
 }
 
