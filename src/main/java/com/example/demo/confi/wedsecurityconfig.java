@@ -22,6 +22,7 @@ public class wedsecurityconfig {
                         .requestMatchers("/public/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/doctors/**").hasAnyRole("ADMIN","DOCTOR")
+                        .requestMatchers("/patients/**").hasAnyRole("PATIENT","ADMIN")
                 )
         .formLogin(Customizer.withDefaults());
         return httpSecurity.build();
