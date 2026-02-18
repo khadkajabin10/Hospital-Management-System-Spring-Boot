@@ -23,5 +23,9 @@ public class DoctorController {
     @GetMapping("/appointments")
     public ResponseEntity<List<AppointmentResponseDto>> getAllAppointmentofDoctor(){
         return ResponseEntity.ok(appointmentService.getAllAppointmentofDoctor(2L));
+        //.ok(...) → quick shortcut for success (200).
+        //
+        //new ResponseEntity<>(..., status) → full control,
+        // lets you set any status code (404, 400, 401, etc.) and a custom body.
     }
 }

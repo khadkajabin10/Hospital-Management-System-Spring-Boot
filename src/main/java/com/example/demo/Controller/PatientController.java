@@ -24,5 +24,15 @@ public class PatientController {
     public ResponseEntity< AppointmentResponseDto> creatnewappointment(@RequestBody CreateappointmentRequestDto createappointmentRequestDto){
 
      return ResponseEntity.status(HttpStatus.CREATED).body( appointmentService.createnewAppointment(createappointmentRequestDto));
+     /*
+     send createappointment body to create appointment
+     appointmentservice reveived it and create and return appointment responser dto and came here now it send to wep page by postmapping
+
+
+
+
+
+     */
     }
+
 }
