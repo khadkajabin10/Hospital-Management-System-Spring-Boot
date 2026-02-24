@@ -1,0 +1,16 @@
+[33ma5d26ae[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m HEAD@{0}: reset: moving to a5d26aec2ca08456297905803179786202c358b6
+[33m1ffefa3[m HEAD@{1}: commit (amend): final
+[33me6a6713[m HEAD@{2}: commit: final
+[33mbe07802[m HEAD@{3}: commit: Removed OAuth secrets and added environment variables
+[33m6ab025f[m HEAD@{4}: reset: moving to HEAD~1
+[33mc7a88bf[m HEAD@{5}: commit: final
+[33m6ab025f[m HEAD@{6}: commit (amend): final
+[33m176ac56[m HEAD@{7}: commit: final
+[33ma347aab[m HEAD@{8}: commit: Ignore application.yml to protect secrets
+[33m0174fef[m HEAD@{9}: commit: final
+[33ma306217[m HEAD@{10}: commit: Ignore application.yml to protect secrets
+[33m04b8feb[m HEAD@{11}: commit: Oauth2 using google and github
+[33ma8dd234[m HEAD@{12}: commit: initial and final
+[33mdf360b7[m HEAD@{13}: commit: last commit
+[33m38c6bce[m HEAD@{14}: commit: first
+[33m74189b3[m HEAD@{15}: clone: from https://github.com/khadkajabin10/springRestAPIsPart2.git
