@@ -1,16 +1,20 @@
 package com.example.demo.Security;
 
 import com.example.demo.Entity.User;
+import com.example.demo.Entity.type.AuthProviderType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
+@Slf4j
 @Component
 public class AuthUtil {
     @Value("${jwt.secretkey}")
@@ -47,6 +51,7 @@ public class AuthUtil {
         //
         //Converts the payload (JSON inside the token) into a Claims object you can work with in Java.
     }
+
     //return Jwts.builder()
     //        .subject(user.getUsername())   // 👈 here you set the "sub" claim
     //        .claim("userId", user.getId().toString())
@@ -78,4 +83,42 @@ public class AuthUtil {
     //.getPayload() → gives you that claims object.
     //
     //.getSubject() → retrieves the sub field (the subject claim) from the payload.
+    public AuthProviderType getProviderType(String registrationId) {
+        return switch (registrationId.toLowerCase()){
+            case "google" ->AuthProviderType.GOOGLE;
+            case "github" ->AuthProviderType.GITHUB;
+            case "facebook" ->AuthProviderType.FACEBOOK;
+            default -> throw new IllegalArgumentException("Unsupported OAuth2 provider :" +registrationId);
+        };
+    }
+
+    public String determineProviderIdFromOauth2User(OAuth2User oAuth2User, String registrationId) {
+       String providerId= switch (registrationId.toLowerCase()){
+           case "google"->oAuth2User.getAttribute("sub");//getiing username as providerID think like this
+           case "github"->oAuth2User.getAttribute("id").toString();
+           default ->{
+               log.error("Unsupported oAuth2 provider:{}",registrationId);
+               throw new IllegalArgumentException("Unsupported OAuth2 provider ok :" +registrationId);
+           }
+       };
+       if(providerId==null||providerId.isEmpty()){
+           log.error("Unable to determine providerId for  provider:{}",registrationId);
+           throw new IllegalArgumentException("Unsupported OAuth2 provider :" +registrationId);
+       }
+       return providerId;
+    }
+
+    public String determineusernamefromoauth2user(OAuth2User oAuth2User, String registrationId, String providerId) {
+        String email=oAuth2User.getAttribute("email");
+        if(email!=null && !email.isBlank()){
+            return  email;
+        }
+      return   switch (registrationId.toLowerCase()){
+            case "google"->oAuth2User.getAttribute("sub");
+            case "github"->oAuth2User.getAttribute("id").toString();
+            default ->  providerId;
+
+        };
+
+    }
 }

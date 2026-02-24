@@ -1,5 +1,6 @@
 package com.example.demo.Entity;
 
+import com.example.demo.Entity.type.AuthProviderType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,6 +23,9 @@ public class User implements UserDetails {
     @JoinColumn(unique = true)
     private String username;
     private String password;
+    private String providerId;
+    @Enumerated(EnumType.STRING)
+    private AuthProviderType authProviderType;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {//this is for defining what user has what authority like it is admin or doctor or paient etc
         return List.of();
