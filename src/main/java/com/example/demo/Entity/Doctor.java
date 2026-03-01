@@ -1,10 +1,7 @@
 package com.example.demo.Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.List;
@@ -15,16 +12,21 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class Doctor {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+ @Column(name = "user_id")
     private Long id;
     @Column(nullable = false, length = 50)
     private  String name;
-    @Column(length = 50)
+    @Column(length = 150)
     private  String specilization;
-    @Column(nullable = false, length = 100,unique = true)
+    @Column(length = 100,unique = true)
     private  String email;
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "user_id", unique = true)
+    private User user;
     @OneToMany(mappedBy = "doctor")
     private List<Appointment> appointments;
     @ManyToMany(mappedBy = "doctor_list")

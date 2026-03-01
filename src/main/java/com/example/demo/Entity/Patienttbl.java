@@ -2,9 +2,7 @@ package com.example.demo.Entity;
 
 import com.example.demo.Entity.type.Bloodgrouptype;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,9 +18,12 @@ import java.util.List;
                 @UniqueConstraint(name = "unique_name_birth", columnNames = {"name", "Birthdate"})
         }
 )
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Patienttbl {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
     private String name;
@@ -34,6 +35,10 @@ public class Patienttbl {
     private String gender;
     @Enumerated(EnumType.STRING)
     private Bloodgrouptype bloodGroup;
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "user_id", unique = true)
+    private User user;
 
     @OneToOne(cascade = {CascadeType.ALL},orphanRemoval = true)
     @JoinColumn(name = "patient_insurance_id")//owening side

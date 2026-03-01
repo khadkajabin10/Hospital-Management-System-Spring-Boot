@@ -1,5 +1,6 @@
 package com.example.demo.Security;
 
+import com.example.demo.Entity.type.RoleType;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -7,23 +8,29 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 
 @RequiredArgsConstructor
 @Configuration
 @Slf4j
+@EnableMethodSecurity
 public class wedsecurityconfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final Oauth2successhandler oauth2successhandler;
+    private final HandlerExceptionResolver handlerExceptionResolver;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity
@@ -32,19 +39,24 @@ public class wedsecurityconfig {
                 .authorizeHttpRequests(auth ->auth
 
                         .requestMatchers("/public/**","/auth/**").permitAll()
-//                        .requestMatchers("/admin/**").hasRole("ADMIN")
-//                        .requestMatchers("/doctors/**").hasAnyRole("ADMIN","DOCTOR")
-//                        .requestMatchers("/patients/**").hasAnyRole("PATIENT","ADMIN")
+                        .requestMatchers("/admin/**").hasRole(RoleType.ADMIN.name())
+                        .requestMatchers("/doctors/**").hasAnyRole(RoleType.ADMIN.name(),RoleType.DOCTOR.name())
+                        .requestMatchers("/patients/**").hasAnyRole(RoleType.ADMIN.name(),RoleType.PATIENT.name())
                                 .anyRequest().authenticated()//any request  requires a valid JWT.
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .oauth2Login(oauth->oauth.failureHandler(
                         (request, response, exception) -> {
                             log.error("oAuth2 error {}"+exception.getMessage());
+                            handlerExceptionResolver.resolveException(request,response,null,exception);
                         }
                 )
                         .successHandler(oauth2successhandler)
-                );
+                )
+                .exceptionHandling(exceptionconfig->exceptionconfig.accessDeniedHandler((request, response, accessDeniedException) -> {
+                    handlerExceptionResolver.resolveException(request,response,null,accessDeniedException);
+                }))
+        ;
         //This ensures JWT authentication happens early, so Spring knows the user before checking roles.
 
 

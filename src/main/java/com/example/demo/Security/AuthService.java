@@ -1,11 +1,12 @@
 package com.example.demo.Security;
 
+import com.example.demo.Entity.Patienttbl;
 import com.example.demo.Entity.User;
 import com.example.demo.Entity.type.AuthProviderType;
+import com.example.demo.Entity.type.RoleType;
+import com.example.demo.Repository.PatientRepository;
 import com.example.demo.Repository.UserRepository;
-import com.example.demo.dto.LoginRequestDTO;
-import com.example.demo.dto.LoginResponseDTO;
-import com.example.demo.dto.SignupResponseDTO;
+import com.example.demo.dto.*;
 import jakarta.transaction.Transactional;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -29,6 +32,8 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
+    private final PatientRepository patientRepository;
+
 
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
         Authentication authentication=authenticationManager.authenticate(//authenticationManager calls loadUserbyusername method
@@ -38,7 +43,7 @@ public class AuthService {
         String token= authUtil.generateAccessToken(user);
         return  new LoginResponseDTO(token,user.getId());
     }
-    public User singupInternal(LoginRequestDTO signupRequestDTO,AuthProviderType authProviderType,String providerid){
+    public User singupInternal(SignupRequestDto signupRequestDTO, AuthProviderType authProviderType, String providerid){
         User user=userRepository.findByusername(signupRequestDTO.getUsername()).orElse(null);
         if(user!=null){
             throw new IllegalArgumentException("User already exist");
@@ -47,15 +52,26 @@ public class AuthService {
                 .username(signupRequestDTO.getUsername())
                 .providerId(providerid)
                         .authProviderType(authProviderType)
+
+                        .roles(signupRequestDTO.getRoles())
                 .build());
         if(authProviderType==AuthProviderType.EMAIL){
             user.setPassword( passwordEncoder.encode(signupRequestDTO.getPassword()));
         }
-        return userRepository.save(user);
+        user =userRepository.save(user);
+        Patienttbl patient=Patienttbl.builder()
+                .name(signupRequestDTO.getName())
+                .email(signupRequestDTO.getUsername())
+                .user(user)
+
+                .build();
+        patientRepository.save(patient);
+
+        return user;
 
     }
 
-    public  SignupResponseDTO signup(LoginRequestDTO signupRequestDTO) {
+    public  SignupResponseDTO signup(SignupRequestDto signupRequestDTO) {
         User user=singupInternal(signupRequestDTO,AuthProviderType.EMAIL,null);
 
         return modelMapper.map(user, SignupResponseDTO.class);
@@ -77,6 +93,7 @@ public class AuthService {
                 .orElse(null);
         //If the user already exists in your DB with this provider, you get them back. If not, null.
         String email=oAuth2User.getAttribute("email");
+        String name=oAuth2User.getAttribute("name");
         User emailuser=userRepository.findByusername(email).orElse(null);
         //Check if a user already exists in your system with the same email address.
         //
@@ -89,7 +106,7 @@ public class AuthService {
             //signup  this is new account
             String username=authUtil.determineusernamefromoauth2user(oAuth2User,registrationId,providerId);
             //SignupResponseDTO signupResponseDTO=signup(new LoginRequestDTO(username,null)); //here we need user
-           user=singupInternal(new LoginRequestDTO(username,null),authProviderType,providerId);
+           user=singupInternal(new SignupRequestDto(username,null,name,Set.of(RoleType.PATIENT)),authProviderType,providerId);
 
         }
         else if(user!=null){

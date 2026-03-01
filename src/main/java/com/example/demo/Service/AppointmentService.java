@@ -14,6 +14,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -49,7 +50,15 @@ public class AppointmentService {
        return appointment;
 
     }
+    @PreAuthorize("(hasRole('ADMIN') or hasRole('DOCTOR')) and #doctorid == authentication.principal.id")
+    //hasRole('ADMIN') → user must be an admin.
+    //
+    //hasRole('DOCTOR') → user must be a doctor.
+    //
+    //#doctorid == authentication.principal.id → the doctor id in the method argument must equal the id of the logged-in user.
+    //Admins can access any doctor.
 
+    //Doctors can only access their own record (matching their id).
     public List<AppointmentResponseDto> getAllAppointmentofDoctor(Long  doctorid) {
         Doctor doctor=doctorRepository.findById(doctorid).orElseThrow();
         return doctor.getAppointments()

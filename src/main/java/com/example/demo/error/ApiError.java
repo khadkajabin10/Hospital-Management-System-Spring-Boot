@@ -16,7 +16,7 @@ public class ApiError {
     }
     public ApiError(String error ,HttpStatus statuscode){
         this();//this() is a call to another constructor in the same class.
-        //i.e First, it runs the no‑arg constructor → sets timestamp = LocalDateTime.now().
+        // First, it runs the no‑arg constructor → sets timestamp = LocalDateTime.now().
         this.error=error;
         this.statuscode=statuscode;
     }

@@ -1,12 +1,7 @@
+INSERT INTO department (name, head_doctor_id) VALUES ('jabin', 1);
+INSERT INTO insurance (policynumber, provider, valid_until, created_at)
+VALUES ('POLICY-001', 'Nepal Life Insurance', '2027-03-01', CURRENT_DATE);
 
+INSERT INTO insurance (policynumber, provider, valid_until, created_at)
+VALUES ('POLICY-003', 'National Insurance', '2027-03-01', CURRENT_DATE);
 
-INSERT INTO appointment (appointment_time, reason, `patient-Id`, `doctor-Id`)
-VALUES
-('2026-11-11 14:25:05', 'General Checkup', 2, 2),
-
- ('2026-11-12 09:00:00', 'Follow-up Consultation', 3, 3),
-
- ('2026-11-13 16:30:00', 'Blood Test', 4, 4),
- ('2026-11-14 10:15:00', 'Dental Checkup', 2, 2),
-
- ('2026-11-15 11:45:00', 'Eye Examination', 3, 3);

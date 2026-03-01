@@ -37,7 +37,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             //Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6...
             if (requestTokenHeader == null || !requestTokenHeader.startsWith("Bearer")) {
                 filterChain.doFilter(request, response);
+                return;
             }
+
             String token = requestTokenHeader.split("Bearer ")[1];
             //"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6..."
             //.split("Bearer ") splits the string into parts:
@@ -60,7 +62,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 User user = userRepository.findByusername(username).orElseThrow();
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                        new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                        new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());//
                 //this line do, Creates an Authentication object that represents:
 //“This request is being made by this user, with these roles-->user.getAuthorities(), and they are authenticated.”
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);//note setAthentication
