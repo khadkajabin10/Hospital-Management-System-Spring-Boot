@@ -31,8 +31,8 @@ public interface PatientRepository extends JpaRepository<Patienttbl,Long> {
 //    List<Patienttbl> findByBirthdateAfter(@Param("birthdate") LocalDate birthdate);
 //   @Query("select new com.example.demo.dto.Bloodgroupcount( p.bloodGroup,count(p)) from Patienttbl p group by p.bloodGroup")
 //    List<Bloodgroupcount> countbloodgroup();
-//    @Transactional
-//    @Modifying
+//    @Transactional //completed successfully or rolled back if something goes wrong.t should be use in update and delete
+//    @Modifying// this anotations tells"This @Query changes data; it is not just fetching data." it should be use in update and delete
 //    @Query("UPDATE Patienttbl p SET p.name = :name WHERE p.id = :id")
 //    int updaterow(@Param("name") String name, @Param("id") Long id);
 //    @Query(value = "Select * from patient ",nativeQuery = true)

@@ -30,5 +30,5 @@ public class Doctor {
     @OneToMany(mappedBy = "doctor")
     private List<Appointment> appointments;
     @ManyToMany(mappedBy = "doctor_list")
-    private Set<Department> departmentList=new HashSet<>();
+    private Set<Department> departmentList=new HashSet<>();//hashset means initially empty set bez no duplication allowed in list duplication is allowed
 }

@@ -66,5 +66,23 @@ public class wedsecurityconfig {
         return httpSecurity.build();
 
     }
+//    @Bean
+//    UserDetailsService userDetailsService(){
+//        UserDetails user1= User.withUsername("admin")
+//                .password(passwordEncoder.encode("pass"))//this create hash code of pass like 2efgha#*/ like this for security so password is not pass but random hass that is even depveloper dont know
+//                .roles("ADMIN")
+//                .build();
+//        UserDetails user2= User.withUsername("patient")
+//                .password(passwordEncoder.encode("pass"))
+//                .roles("PATIENT")
+//                .build();
+//        UserDetails user3= User.withUsername("doctor")
+//                .password(passwordEncoder.encode("pass"))
+//                .roles("DOCTOR")
+//                .build();
+//        return new InMemoryUserDetailsManager(user1,user2,user3);
+//    }
 
 }
+
+

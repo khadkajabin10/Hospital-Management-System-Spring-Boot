@@ -36,7 +36,7 @@ public class Patienttbl {
     @Enumerated(EnumType.STRING)
     private Bloodgrouptype bloodGroup;
     @OneToOne
-    @MapsId
+    @MapsId//means the two entities share the same ID value.
     @JoinColumn(name = "user_id", unique = true)
     private User user;
 
