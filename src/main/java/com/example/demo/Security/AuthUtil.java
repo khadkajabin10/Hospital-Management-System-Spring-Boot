@@ -37,11 +37,40 @@ public class AuthUtil {
 
     public String getusernameFromToken(String token) {
         Claims claims= Jwts.parser()
-                .verifyWith(getSecretKey())//the token text has secret key and header, and that key is verified with getSecretKey() secretkey and header.
-                .build()
-                .parseSignedClaims(token)//take text
-                .getPayload();
-        return claims.getSubject();
+                .verifyWith(getSecretKey())//This gives the parser the secret key that your server trusts. for verification
+                .build()//now build the parse
+                .parseSignedClaims(token)//give token to parse to verify with signature
+                .getPayload();//if parse is correct we get payload in the form of claims object
+        return claims.getSubject();//we get subject look in generateAccessTokern subject has getusername so that
+        /*jwts.parser()
+        * A parser is simply something that takes data in a particular format and understands/reads it.
+
+            Simple example
+
+            Suppose you have this text:
+
+            10 + 20
+
+            A parser can read it and understand:
+
+            10 → number
+            +  → operator
+            20 → number
+
+            Then the program can work with that information.
+
+            In JWT
+
+            A JWT is just a long piece of text:
+
+            eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+            The JWT parser understands the JWT structure:
+
+            JWT
+             ├── Header
+             ├── Payload
+             └── Signature*/
 
         //parseSignedClaims(token) → takes the raw JWT string (which is just text) and parses it:
         //
@@ -95,7 +124,17 @@ public class AuthUtil {
     public String determineProviderIdFromOauth2User(OAuth2User oAuth2User, String registrationId) {
        String providerId= switch (registrationId.toLowerCase()){
            case "google"->oAuth2User.getAttribute("sub");//getiing username as providerID think like this
+           //of google like this i guess{
+           //  "sub": "109876543210987654",
+           //  "name": "Jabin",
+           //  "email": "jabin@gmail.com"
+           //}
            case "github"->oAuth2User.getAttribute("id").toString();
+           //of github like this i guess{
+           //           //  "id": "109876543210987654",
+           //           //  "name": "Jabin",
+           //           //  "email": "jabin@gmail.com"
+           //           //}
            default ->{
                log.error("Unsupported oAuth2 provider:{}",registrationId);
                throw new IllegalArgumentException("Unsupported OAuth2 provider ok :" +registrationId);
@@ -111,7 +150,7 @@ public class AuthUtil {
     public String determineusernamefromoauth2user(OAuth2User oAuth2User, String registrationId, String providerId) {
         String email=oAuth2User.getAttribute("email");
         if(email!=null && !email.isBlank()){
-            return  email;
+            return  email;//if this return then no below return will be called simple programming
         }
       return   switch (registrationId.toLowerCase()){
             case "google"->oAuth2User.getAttribute("sub");

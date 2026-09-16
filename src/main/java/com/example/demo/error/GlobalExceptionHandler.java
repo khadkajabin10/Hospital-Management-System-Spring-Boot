@@ -12,6 +12,10 @@ import org.springframework.web.client.HttpStatusCodeException;
 import java.nio.file.AccessDeniedException;
 
 @RestControllerAdvice
+// GlobalExceptionHandler
+//@RestControllerAdvice
+
+//is mainly used for exceptions that happen while Spring is processing your controller layer.
 public class GlobalExceptionHandler {
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<ApiError> handleUsernameNotfoundException(UsernameNotFoundException ex){

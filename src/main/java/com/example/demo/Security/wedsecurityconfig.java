@@ -44,14 +44,18 @@ public class wedsecurityconfig {
                         .requestMatchers("/patients/**").hasAnyRole(RoleType.ADMIN.name(),RoleType.PATIENT.name())
                                 .anyRequest().authenticated()//any request  requires a valid JWT.
                 )
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .oauth2Login(oauth->oauth.failureHandler(
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)//add jwtauthfilete before UsernamePasswordAuthenticationFilter.class
+                .oauth2Login(oauth->oauth.failureHandler(/*
+                .oauth2Login(...)This tells Spring Security:"Enable OAuth2 login for this application."*/
                         (request, response, exception) -> {
+                            //this is lambda if fail it give http request response and exceptions
                             log.error("oAuth2 error {}"+exception.getMessage());
                             handlerExceptionResolver.resolveException(request,response,null,exception);
+                            //handlerExceptionResolver is used bez The error happens inside the Spring Security/filter layer and it hasnt reach the controller yet
+                            // , so we use HandlerExceptionResolver to forward it toward the controller handler i.e global exceptinal handler
                         }
                 )
-                        .successHandler(oauth2successhandler)
+                        .successHandler(oauth2successhandler)//auth.failureHandler().successHandler() thats the flow
                 )
                 .exceptionHandling(exceptionconfig->exceptionconfig.accessDeniedHandler((request, response, accessDeniedException) -> {
                     handlerExceptionResolver.resolveException(request,response,null,accessDeniedException);

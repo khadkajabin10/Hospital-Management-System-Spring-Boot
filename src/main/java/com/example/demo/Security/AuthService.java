@@ -56,7 +56,7 @@ public class AuthService {
                         .roles(signupRequestDTO.getRoles())
                 .build());
         if(authProviderType==AuthProviderType.EMAIL){
-            user.setPassword( passwordEncoder.encode(signupRequestDTO.getPassword()));
+            user.setPassword( passwordEncoder.encode(signupRequestDTO.getPassword()));//null xa password dont worry
         }
         user =userRepository.save(user);
         Patienttbl patient=Patienttbl.builder()
