@@ -44,19 +44,19 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {//this is for defining what user has what authority like it is admin or doctor or paient etc
 //        return roles.stream()
-//                .map(role->new SimpleGrantedAuthority("ROLE_"+role.name()))
-//                .collect(Collectors.toSet());
-//    }//this method is call in jwtauthfilter to make token thatis  new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities()); here
+//                .map(role->new SimpleGrantedAuthority("ROLE_"+role.name()))//SimpleGrantedAuthority converts that String into a Spring Security authority object. eg .ROLE_ADMIN this is object
+//                .collect(Collectors.toSet());//collects all authority objects into a Set.
+//    }//this method is call in jwtauthfilter to make token that is  new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities()); here
 
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
         roles.forEach(
                 role -> {
-                    Set<SimpleGrantedAuthority> permission = RolePremissionMapping.gettAuthoritesForRole(role);//permission like patient:read,patient:write and collection of them comes here for given role
+                    Set<SimpleGrantedAuthority> permission = RolePremissionMapping.gettAuthoritesForRole(role);//permission like patient:read,patient:write and collection of them comes here for given role as a simpleGrantedAuthorities object
 
                     authorities.addAll(permission);//come in collection so addall
                     authorities.add(new SimpleGrantedAuthority("ROLE_" + role.name()));//along with permission we add role too
                 }
         );
-        return authorities;
+        return authorities;//this is simpleGrandtedauthority object note that
     }
 }

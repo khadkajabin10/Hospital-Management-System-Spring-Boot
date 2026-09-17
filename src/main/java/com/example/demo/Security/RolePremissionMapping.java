@@ -23,9 +23,10 @@ public class RolePremissionMapping {
                                        USER_MANAGE, REPORT_VIEW ) );
 
     public static Set<SimpleGrantedAuthority> gettAuthoritesForRole(RoleType role) {
-        return map.get(role).stream()
+        return map.get(role)//map.get(PATIENT) and returns:{PATIENT_READ,APPOINTMENT_READ, APPOINTMENT_WRITE}
+                .stream()//one by one
                 .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
-                //take PATIENT_READ(premission)->PATIENT_READ.getpermission() that is =patient:read similary for all stream and collect sets and return collection
+                //make simplegrantedauthority  object as SimpleGrantedAuthority('paitent:read") like wise make 3 object and collect to set
                 .collect(Collectors.toSet());
     }//look at role and get its all permission and stream them and
 }
